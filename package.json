@@ -1,7 +1,7 @@
 {
-  "name": "react-php-base",
+  "name": "Mining-equation-tool",
   "version": "0.0.1",
-  "description": "ReactJS + PHP API",
+  "description": "I=PAT equation tool for uqx mining course",
   "main": "index.js",
   "scripts": {
     "start": "webpack --watch",
@@ -15,14 +15,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ankithkonda/react-php-base.git"
+    "url": "git+https://github.com/UQ-UQx/Mining_Equation_Tool.git"
   },
   "author": "Ankith Konda",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ankithkonda/react-php-base/issues"
+    "url": "https://github.com/UQ-UQx/Mining_Equation_Tool/issues"
   },
-  "homepage": "https://github.com/ankithkonda/react-php-base#readme",
+  "homepage": "https://github.com/UQ-UQx/Mining_Equation_Tool#readme",
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
     "babel-cli": "^6.24.0",

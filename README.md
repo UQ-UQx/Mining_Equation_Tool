@@ -1,7 +1,9 @@
-# ReactJS App with PHP API
+# Mining101x I=PAT tool
 
-This is a simple ReactJS hello world app with a PHP API.
+This tool is for students to understand how impact changes over time given that they change a few variables
 
+
+# Development Instructions:
 ## Get Started 
 
 ### Step 1)
