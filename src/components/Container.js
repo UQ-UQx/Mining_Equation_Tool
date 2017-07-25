@@ -15,7 +15,7 @@ export default class Container extends React.Component {
             input_val:"",
             api_message:""
         }
-        props.appState ? this.state = props.appState : this.state = defaultState
+        props.appState ? this.state = { ...defaultState, ...props.appState} : this.state = defaultState
 
         this.handleInputOnChange = this.handleInputOnChange.bind(this);
     }
