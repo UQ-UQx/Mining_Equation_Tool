@@ -65,6 +65,7 @@
     "lodash": "^4.17.4",
     "marker-clusterer-plus": "^2.1.4",
     "pdfmake": "^0.1.27",
+    "polished": "^1.3.0",
     "prop-types": "~15.5.4",
     "rc-slider": "^8.1.3",
     "react": "^15.4.2",
@@ -82,11 +83,13 @@
     "react-redux": "^5.0.3",
     "react-select": "^1.0.0-rc.3",
     "react-tagcloud": "^1.2.0",
+    "recharts": "^1.0.0-alpha.2",
     "redux": "^3.6.0",
     "redux-logger": "^2.8.2",
     "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.2.0",
+    "styled-components": "^2.1.1",
     "uuid": "^3.0.1"
   },
-  "private":true
+  "private": true
 }
