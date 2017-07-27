@@ -17,6 +17,8 @@ import {
     Text
 } from 'recharts';
 
+import styles from "./_Styles"
+import PopulationComponent from "./PopulationContainer"
 import PopulationData from "../../public/data/population.json"
 import styled from "styled-components"
 import { clearFix } from "polished"
@@ -36,37 +38,34 @@ const Input = styled.input`
     width:400px;
 `
 const LtiMessageContainer = styled.h3`
-    color: ${ (props) => props.status === "valid" ? "green":"red" }
+    color: ${ (props) => props.valid ? "green":"red" }
 `
 
-const ChartContainerDiv = styled.div`
+const PopulationChartContainer = styled.div`
+    width:100%;
+    height:400px;
+`
+const ImpactCharContainer = styled.div`
     width:100%;
     height:400px;
 `
 
+const Button = styled.input`
+    ${ styles.uqxBorder }
+`
+
 
 export default class Container extends React.Component {
-
-
     constructor(props){
         super(props);
 
         let defaultState = {
-            input_val:"",
-            api_message:"",
-            data:[
-                {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
-                {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
-                {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
-                {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
-                {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
-                {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
-                {name: 'Page G', uv: 3490, pv: 4300, amt: 2100}
-            ]
+            population_data:PopulationData
         }
         props.appState ? this.state = { ...defaultState, ...props.appState} : this.state = defaultState
 
         this.handleInputOnChange = this.handleInputOnChange.bind(this);
+        this.dangerClicked = this.dangerClicked.bind(this)
     }
     componentWillMount(){
         console.log("Layout component will mount")
@@ -95,7 +94,7 @@ export default class Container extends React.Component {
         });
 
 
-        console.log(PopulationData)
+       // console.log(PopulationData)
 
 
         const title = this.some`
@@ -120,50 +119,75 @@ export default class Container extends React.Component {
         return "blue"
     }
 
+    dangerClicked(e){
+        console.log(e.target.value);
+    }
+
     render(){
 
-        let LTI_Message = "Oh No LTI is not valid"
-        let lti_status = "invalid";
+        let LTI_Message = <LtiMessageContainer invalid>"Oh No LTI is not valid"</LtiMessageContainer>
+
         if($LTI_custom_variable_by_user_bool && $LTI_is_valid){
-            LTI_Message = "LTI is valid and a custom LTI variable is now available in the global scope - "+$LTI_custom_variable_by_user_string
-            lti_status = "valid";
+            LTI_Message = <LtiMessageContainer valid>LTI is valid and a custom LTI variable is now available in the global scope - {$LTI_custom_variable_by_user_string}</LtiMessageContainer>
         }
-        console.log(PopulationData)
+        //console.log(PopulationData)
         
 
         return (
         <ContainerDiv>
-            <Header>{this.state.input_val}</Header>
-            
-            <Input 
-                type="text" 
-                class="form-input" 
-                id="usr"
-                value={this.state.input_val}
-                onChange={this.handleInputOnChange}
-            />
+            <Header>MiningX I=PAT Visualisation</Header>
 
-            <h2>{this.state.api_message}</h2>
-            <LtiMessageContainer status={lti_status}>{LTI_Message}</LtiMessageContainer>
+            <ImpactCharContainer>
+            
+                <ResponsiveContainer>
+                    <LineChart width={600} height={300} data={this.state.population_data}
+                        margin={{ top: 10, right: 50, left: 100, bottom: 50 }}>
 
-            <ChartContainerDiv>
-            
-            
-            <ResponsiveContainer>
-                <LineChart width={600} height={300} data={PopulationData}
-                    margin={{ top: 10, right: 30, left: 40, bottom: 20 }}>
+                    <XAxis 
+                        dataKey="year" 
+                        strokeWidth={2} 
+                        domain={['auto', 'auto']}  
 
-                <XAxis dataKey="year"   label={<XAxisLabel text="Years"/>} />
-                <YAxis dataKey="pop" domain={['auto', 'auto']}  label={<YAxisLabel text="Population"/>} />
-                
-                <Tooltip/>
-                <Line type="natural" dot={false} dataKey="pop" stroke="#8884d8" />
-                </LineChart>
+                        label={<XAxisLabel text="Year"/>} 
+                        tickCount={5}
 
-            </ResponsiveContainer>
+                        tick={<AngledTick />}
+                    />
+                  
+                    <YAxis  
+                        yAxisId="left" 
+                        orientation="left" 
+                        dataKey="pop" 
+                        domain={['auto', 'auto']}  
+                        label={<YAxisLabel orientation="left" text="Population"/>}
+                        tickFormatter={CommaFormat}
+                        stroke='#41527D'
+                        strokeWidth={2}
+                    />
+
+
+                    <YAxis strokeWidth={2} tickFormatter={CommaFormat} yAxisId="right" orientation="right" dataKey="impact" domain={['auto', 'auto']} stroke='#F70D1C' label={<YAxisLabel orientation="right" text="Impact"/>} />
+
+                    <Tooltip 
+                        content={<IPATTooltipCustom />}
+                        isAnimationActive={false}
+                    />
+
+                    <Line dot={false} yAxisId="left" type="natural" type='linear' dataKey='pop' stroke='#41527D' strokeWidth={3} />
+                    <Line dot={false} yAxisId="right" type="natural" type='linear' dataKey='impact' stroke='#F70D1C' strokeWidth={3} />
+
+                    </LineChart>
+                </ResponsiveContainer>
             
-            
-            </ChartContainerDiv>
+            </ImpactCharContainer>
+
+           
+
+                <Button value="Danger Button" type="Button" onClick={this.dangerClicked} className="btn btn-md btn-danger" readOnly/>
+
+
+
+            <PopulationComponent />
 
             
 
@@ -171,11 +195,21 @@ export default class Container extends React.Component {
     }
 }
 
+const CommaFormat = (value) => {
+    return value.toLocaleString()
+}
+const AngledTick = (props) => {
+    const {x, y, payload} = props;
+   	return (
+    	<g transform={`translate(${x},${y})`}>
+        <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">{payload.value}</text>
+      </g>
+    );
+}
 const XAxisLabel = (props) => {
- //console.log(props)
   const {x, y, width, height} = props.viewBox;
   const cx =  x + (width / 2);
-  const cy =  y + height + 10;
+  const cy =  y + height + 40;
   return (
     <text x={cx} y={cy} textAnchor="middle">
       {props.text} 
@@ -183,10 +217,10 @@ const XAxisLabel = (props) => {
   );
 };
 
-const YAxisLabel = (props, another, more, again) => {
-  //console.log(props, another, more, again)
+const YAxisLabel = (props) => {
   const {x, y, width, height} = props.viewBox;
-  const cx = x - 15
+  const { orientation } = props
+  const cx = orientation === "right" ?  x + 30 + width : x - 65
   const cy = (height / 2) + y
   const rot = `270 ${cx} ${cy}`
   return (
@@ -195,4 +229,24 @@ const YAxisLabel = (props, another, more, again) => {
     </text>
   );
 };
+
+const IPATToolTip = styled.div`
+    width:170px;
+    height:100px;
+    background-color:white;
+    color:black;
+    border:1px solid black;
+`
+const TooltipHeader = styled.div`
+    background-color:black;
+
+`
+
+const IPATTooltipCustom = (props) => {
+    console.log(props)
+    return(<IPATToolTip>
+        
+    </IPATToolTip>)
+}
+
 
