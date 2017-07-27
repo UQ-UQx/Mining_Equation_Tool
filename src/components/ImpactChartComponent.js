@@ -41,28 +41,34 @@ export default class ImpactChartComponent extends React.Component{
 
                     <XAxis 
                         dataKey="year" 
-                        strokeWidth={2} 
                         domain={['auto', 'auto']}  
-
                         label={<XAxisLabel text="Year"/>} 
+                        strokeWidth={2} 
                         tickCount={5}
-
                         tick={<AngledTick />}
                     />
                   
                     <YAxis  
-                        yAxisId="left" 
-                        orientation="left" 
                         dataKey="pop" 
-                        domain={['auto', 'auto']}  
+                        domain={['auto', 'auto']} 
                         label={<YAxisLabel orientation="left" text="Population"/>}
-                        tickFormatter={CommaFormat}
-                        stroke='#41527D'
-                        strokeWidth={2}
+                        orientation="left" 
+                        stroke='#41527D' 
+                        strokeWidth={2} 
+                        tickFormatter={CommaFormat} 
+                        yAxisId="left" 
                     />
 
-
-                    <YAxis strokeWidth={2} tickFormatter={CommaFormat} yAxisId="right" orientation="right" dataKey="impact" domain={['auto', 'auto']} stroke='#F70D1C' label={<YAxisLabel orientation="right" text="Impact"/>} />
+                    <YAxis 
+                        dataKey="impact" 
+                        domain={['auto', 'auto']} 
+                        label={<YAxisLabel orientation="right" text="Impact"/>}
+                        orientation="right" 
+                        stroke='#F70D1C' 
+                        strokeWidth={2} 
+                        tickFormatter={CommaFormat} 
+                        yAxisId="right" 
+                    />
 
                     <Tooltip 
                         content={<IPATTooltipCustom />}
