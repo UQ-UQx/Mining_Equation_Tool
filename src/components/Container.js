@@ -111,7 +111,7 @@ export default class Container extends React.Component {
 
 const ContainerDiv = styled.div`
     width: 100%;
-    max-width:1100px;
+   /*  max-width:1100px; */
 `
 const Header = styled.h1`
     margin:0;
