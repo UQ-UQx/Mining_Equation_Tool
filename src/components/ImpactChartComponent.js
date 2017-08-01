@@ -31,13 +31,14 @@ const ImpactChartContainer = styled.div`
 export default class ImpactChartComponent extends React.Component{
 
 
+
     render(){
 
-        return(<ImpactChartContainer>
+        console.log("CHART COMPONENT", this.props)
 
-            <ResponsiveContainer>
-                    <LineChart width={600} height={300} data={this.props.population_data}
-                        margin={{ top: 10, right: 50, left: 100, bottom: 50 }}>
+         let chart = (<ResponsiveContainer>
+                    <LineChart width={600} height={300} data={this.props.impact_chart_data}
+                        margin={{ top: 10, right: 100, left: 100, bottom: 50 }}>
 
                     <XAxis 
                         dataKey="year" 
@@ -72,22 +73,24 @@ export default class ImpactChartComponent extends React.Component{
 
                     <Tooltip 
                         content={<IPATTooltipCustom />}
-                        isAnimationActive={false}
+                        isAnimationActive={true}
                     />
 
                     <Line dot={false} yAxisId="left" type="natural" type='linear' dataKey='pop' stroke='#41527D' strokeWidth={3} />
                     <Line dot={false} yAxisId="right" type="natural" type='linear' dataKey='impact' stroke='#F70D1C' strokeWidth={3} />
 
                     </LineChart>
-                </ResponsiveContainer>
+                </ResponsiveContainer>) 
+
+        return(<ImpactChartContainer>
+
+            {chart}
 
         </ImpactChartContainer>)
     }
 }
 
-/**
- *  Dumb functional components
- */
+
 const CommaFormat = (value) => {
     return value.toLocaleString()
 }
@@ -106,24 +109,28 @@ const XAxisLabel = (props) => {
   const cx =  x + (width / 2)
   const cy =  y + height + 40
   return (
-    <text x={cx} y={cy} textAnchor="middle">
+    <AxisLabel x={cx} y={cy} textAnchor="middle">
       {props.text} 
-    </text>
+    </AxisLabel>
   )
 }
 
 const YAxisLabel = (props) => {
   const {x, y, width, height} = props.viewBox
   const { orientation } = props
-  const cx = orientation === "right" ?  x + 30 + width : x - 65
+  const cx = orientation === "right" ?  x + 80 + width : x - 65
   const cy = (height / 2) + y
   const rot = `270 ${cx} ${cy}`
   return (
-    <text x={cx} y={cy} transform={`rotate(${rot})`} textAnchor="middle">
+    <AxisLabel x={cx} y={cy} transform={`rotate(${rot})`} textAnchor="middle">
       {props.text}
-    </text>
+    </AxisLabel>
   )
 }
+
+const AxisLabel = styled.text`
+    font-weight:bold;
+`
 
 const IPATToolTip = styled.div`
     width:200px;
