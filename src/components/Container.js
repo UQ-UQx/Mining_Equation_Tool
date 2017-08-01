@@ -3,53 +3,36 @@ import React from "react"
 import axios from "axios"
 import ImpactCharContainer from "./ImpactChartComponent"
 import { clearFix } from "polished"
+import OptionsPanelComponent from "./OptionsPanelComponent"
 import PopulationData from "../../public/data/population.json"
 import styles from "./_Styles"
 import styled from "styled-components"
 
-const ContainerDiv = styled.div`
-    width: 100%;
-    max-width:1100px;
-`
-const Header = styled.h1`
-    margin:0;
-    margin-bottom: 10px;
-    padding:10px;
-    background-color:black;
-    color:white;
-    text-align:center;
-`
 export default class Container extends React.Component {
     constructor(props){
         super(props);
 
         let defaultState = {
             population_data_original:PopulationData,
-            population_data:[],
             gdp:75000000000000,
             start_year:2015,
             end_year:2100,
-            gdp_increase:0.02,
-            technology_start:0.1,
-            affluence_data:[],
-            technology_data:[],
-            impact_data:[],
-            impact_chart_data:[]
+            gdp_increase:0.01,
+            technology_start:0.1
         }
         props.appState ? this.state = { ...defaultState, ...props.appState} : this.state = defaultState
-        this.calculateNewValues = this.calculateNewValues.bind(this)
+        this.updateStateValue = this.updateStateValue.bind(this)
 
     }
+ 
 
-    componentWillMount(){
-
-
-        this.calculateNewValues();
-
+    updateStateValue(update){
+        this.setState(update)
     }
 
-    calculateNewValues(){
-        console.log("BLEh");
+
+    render(){
+
 
         let population_data = this.state.population_data_original.filter((pop_dat)=>{
             if(pop_dat.year <= this.state.end_year && pop_dat.year >= this.state.start_year){
@@ -76,7 +59,7 @@ export default class Container extends React.Component {
 
              =(-1*(A27^2)*0.000001)+(A27*0.0568) */
 
-            console.log(pop_dat.year,pop_dat.pop, aff, tech, aff*tech*pop_dat.pop)
+            console.log(pop_dat.year,pop_dat.pop, gdp, aff, tech, aff*tech*pop_dat.pop)
             affluence_data.push({
                 year:pop_dat.year,
                 affluence: aff
@@ -102,39 +85,46 @@ export default class Container extends React.Component {
 
 
 
-        console.log(affluence_data);
-
-
-        this.setState({
-            population_data,
-            affluence_data,
-            technology_data,
-            impact_data,
-            impact_chart_data
-        })
-
-
-    }
-
-
-    render(){
-
-        console.log("RENDER!!")
         
         return (<ContainerDiv>
 
             <Header>MiningX I=PAT Visualisation</Header>
 
              <ImpactCharContainer
-                population_data={this.state.population_data}
-                impact_data={this.state.impact_data}
-                impact_chart_data={this.state.impact_chart_data}
+                population_data={population_data}
+                impact_data={impact_data}
+                impact_chart_data={impact_chart_data}
             /> 
+
+            <OptionsPanelContainer>
+                <OptionsPanelComponent
+                    {...this.state}
+                    calculateNewValues={this.calculateNewValues}
+                    updateStateValue={this.updateStateValue}
+                />
+            </OptionsPanelContainer>
 
         </ContainerDiv>);
     }
 }
 
 
+const ContainerDiv = styled.div`
+    width: 100%;
+    max-width:1100px;
+`
+const Header = styled.h1`
+    margin:0;
+    margin-bottom: 10px;
+    padding:10px;
+    background-color:black;
+    color:white;
+    text-align:center;
+`
+const OptionsPanelContainer = styled.div`
 
+    width:100%;
+    height:200px;
+    
 
+`

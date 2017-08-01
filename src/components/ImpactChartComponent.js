@@ -18,6 +18,7 @@ import {
     CartesianGrid, 
     Text
 } from 'recharts';
+import {Motion, spring} from 'react-motion';
 import styles from "./_Styles"
 import styled from "styled-components"
 
@@ -52,7 +53,7 @@ export default class ImpactChartComponent extends React.Component{
                     <YAxis  
                         dataKey="pop" 
                         domain={['auto', 'auto']} 
-                        label={<YAxisLabel orientation="left" text="Population"/>}
+                        label={<YAxisLabel color={'#41527D'} orientation="left" text="Population"/>}
                         orientation="left" 
                         stroke='#41527D' 
                         strokeWidth={2} 
@@ -62,8 +63,8 @@ export default class ImpactChartComponent extends React.Component{
 
                     <YAxis 
                         dataKey="impact" 
-                        domain={['auto', 'auto']} 
-                        label={<YAxisLabel orientation="right" text="Impact"/>}
+                        domain={[0, 800000000000]} 
+                        label={<YAxisLabel color={'#F70D1C'} orientation="right" text="Impact"/>}
                         orientation="right" 
                         stroke='#F70D1C' 
                         strokeWidth={2} 
@@ -85,6 +86,7 @@ export default class ImpactChartComponent extends React.Component{
         return(<ImpactChartContainer>
 
             {chart}
+
 
         </ImpactChartContainer>)
     }
@@ -117,12 +119,14 @@ const XAxisLabel = (props) => {
 
 const YAxisLabel = (props) => {
   const {x, y, width, height} = props.viewBox
-  const { orientation } = props
+  const { orientation, color } = props
   const cx = orientation === "right" ?  x + 80 + width : x - 65
   const cy = (height / 2) + y
   const rot = `270 ${cx} ${cy}`
+
+  console.log(props)
   return (
-    <AxisLabel x={cx} y={cy} transform={`rotate(${rot})`} textAnchor="middle">
+    <AxisLabel x={cx} y={cy} color={color} transform={`rotate(${rot})`} textAnchor="middle">
       {props.text}
     </AxisLabel>
   )
@@ -130,6 +134,8 @@ const YAxisLabel = (props) => {
 
 const AxisLabel = styled.text`
     font-weight:bold;
+    fill:${(props)=> props.color ? props.color : "black" };
+
 `
 
 const IPATToolTip = styled.div`
