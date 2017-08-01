@@ -21,7 +21,7 @@
         		die();
         	}
 
-            $lti_id = $lti->lti_id();
+           /*  $lti_id = $lti->lti_id();
 			$user_id = $lti->user_id();
 			$calldata = $lti->calldata();
 
@@ -34,16 +34,10 @@
 			if(isset($calldata{'custom_variable_by_user_bool'})){
 				$custom_variable_by_user_bool = json_decode($calldata{'custom_variable_by_user_bool'});
 			}
-            //echo $custom_variable_by_user_string;
+            //echo $custom_variable_by_user_string; */
         ?>
     </head>
     <body>
-    <script type="text/javascript">
-
-		$LTI_custom_variable_by_user_string = '<?php echo $custom_variable_by_user_string ?>';
-		$LTI_custom_variable_by_user_bool = JSON.parse('<?php echo json_encode($custom_variable_by_user_bool) ?>');
-        $LTI_is_valid = JSON.parse('<?php echo json_encode($lti->is_valid()) ?>'); 
-	</script>
     <div id="app"></div>
     <script type="text/javascript" src="./build/bundle.js"></script>
     </body>
