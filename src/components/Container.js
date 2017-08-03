@@ -37,6 +37,16 @@ export default class Container extends React.Component {
         return (-1*(gdp_per_capita^2)*0.000001)+(gdp_per_capita*0.0568)
     }
 
+    calculatePopulationValues(type, year){
+        switch (type) {
+            case "median":
+                return (-462.81*(year^2))+(year*0.0568)
+                break;
+            default:
+                break;
+        }
+    }
+
     render(){
 
         console.log(population[0][this.state.population_type])
@@ -60,7 +70,7 @@ export default class Container extends React.Component {
 
             let gdp_per_capita = gdp/pop_dat[this.state.population_type]
             console.log(pop_dat[this.state.population_type])
-            let aff = (-1*(gdp_per_capita^2)*0.000001)+(gdp_per_capita*0.0568)
+            let aff = getAffluence(gdp_per_capita)
             let impact =  aff*tech*pop_dat[this.state.population_type]
             /*  Affluence Formula y = -1E-06x^2 + 0.0568x
 
