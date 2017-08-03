@@ -41,6 +41,49 @@ export default class OptionsPanelComponent extends React.Component {
                 }}
             
             />
+
+            <CheckBoxGroup
+            
+                name="gdp_increase"
+                options={[
+                    {
+                        value:"Median",
+                        data:"median",
+                        checked: true,
+                    },
+                    {
+                        value:"Upper 95%",
+                        data:"upper_a",
+                        checked: false,
+                    },
+                    {
+                        value:"Upper 80%",
+                        data:"upper_b",
+                        checked: false,
+                    },
+                    {
+                        value:"Lower 95%",
+                        data:"lower_a",
+                        checked: false,
+                    },
+                    {
+                        value:"Lower 80%",
+                        data:"lower_b",
+                        checked: false,
+                    }
+                ]}
+                type="radio"
+                returnVal="all"
+                onOptionChange={(name, selected_options)=>{
+                    console.log(name, selected_options)
+
+                    this.props.updateStateValue({
+                        "population_type":selected_options[0].data
+                    }) 
+
+                }}
+            
+            />
         </OptionsPanel>)
     }
 }

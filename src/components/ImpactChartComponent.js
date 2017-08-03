@@ -52,7 +52,7 @@ export default class ImpactChartComponent extends React.Component{
                   
                     <YAxis  
                         dataKey="pop" 
-                        domain={['auto', 'auto']} 
+                        domain={["auto", "auto"]} 
                         label={<YAxisLabel color={'#41527D'} orientation="left" text="Population"/>}
                         orientation="left" 
                         stroke='#41527D' 
@@ -63,7 +63,7 @@ export default class ImpactChartComponent extends React.Component{
 
                     <YAxis 
                         dataKey="impact" 
-                        domain={[0, 800000000000]} 
+                        domain={["auto", "auto"]} 
                         label={<YAxisLabel color={'#F70D1C'} orientation="right" text="Impact"/>}
                         orientation="right" 
                         stroke='#F70D1C' 
@@ -77,8 +77,8 @@ export default class ImpactChartComponent extends React.Component{
                         isAnimationActive={true}
                     />
 
-                    <Line dot={false} yAxisId="left" type="natural" type='linear' dataKey='pop' stroke='#41527D' strokeWidth={3} />
-                    <Line dot={false} yAxisId="right" type="natural" type='linear' dataKey='impact' stroke='#F70D1C' strokeWidth={3} />
+                    <Line connectNulls={true} dot={false} yAxisId="left" type="natural" type='linear' dataKey='pop' stroke='#41527D' strokeWidth={3} />
+                    <Line connectNulls={true} dot={false} yAxisId="right" type="natural" type='linear' dataKey='impact' stroke='#F70D1C' strokeWidth={3} />
 
                     </LineChart>
                 </ResponsiveContainer>) 
