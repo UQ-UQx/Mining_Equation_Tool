@@ -32,7 +32,7 @@ export default class ChartsContainerComponent extends React.Component{
 
                             <XAxis 
                                 dataKey="year" 
-                                domain={['auto', 'auto']}  
+                                domain={[6000000000, 12000000000]}  
                                 label={<XAxisLabel text="Year"/>} 
                                 strokeWidth={2} 
                                 tickCount={5}
@@ -42,7 +42,7 @@ export default class ChartsContainerComponent extends React.Component{
                             <YAxis  
                                 dataKey="pop" 
                                 domain={["auto", "auto"]} 
-                                label={<YAxisLabel color={'#41527D'} orientation="left" text="Population"/>}
+                                label={<YAxisLabel padding={50} color={'#41527D'} orientation="left" text="Population"/>}
                                 orientation="left" 
                                 stroke='#41527D' 
                                 strokeWidth={2} 
@@ -62,11 +62,11 @@ export default class ChartsContainerComponent extends React.Component{
         let chart = (<AffluenceChart>
                         <ResponsiveContainer>
                             <LineChart width={600} height={300} data={affluence_data}
-                                margin={{ top: 10, right: 10, left: 100, bottom: 50 }}>
+                                margin={{ top: 10, right: 10, left: 50, bottom: 50 }}>
 
                             <XAxis 
                                 dataKey="year" 
-                                domain={['auto', 'auto']}  
+                                domain={[420, 900]}  
                                 label={<XAxisLabel text="Year"/>} 
                                 strokeWidth={2} 
                                 tickCount={5}
@@ -75,8 +75,8 @@ export default class ChartsContainerComponent extends React.Component{
                         
                             <YAxis  
                                 dataKey="affluence" 
-                                domain={["auto", "auto"]} 
-                                label={<YAxisLabel color={'#41527D'} orientation="left" text="Affluence"/>}
+                                domain={[420, 930]} 
+                                label={<YAxisLabel padding={5} color={'#41527D'} orientation="left" text="Affluence"/>}
                                 orientation="left" 
                                 stroke='#41527D' 
                                 strokeWidth={2} 
@@ -96,7 +96,7 @@ export default class ChartsContainerComponent extends React.Component{
         let chart = (<TechChart>
                         <ResponsiveContainer>
                             <LineChart width={600} height={300} data={technology_data}
-                                margin={{ top: 10, right: 10, left: 100, bottom: 50 }}>
+                                margin={{ top: 10, right: 10, left: 50, bottom: 50 }}>
 
                             <XAxis 
                                 dataKey="year" 
@@ -109,8 +109,8 @@ export default class ChartsContainerComponent extends React.Component{
                         
                             <YAxis  
                                 dataKey="technology" 
-                                domain={["auto", "auto"]} 
-                                label={<YAxisLabel color={'#41527D'} orientation="left" text="Technology"/>}
+                                domain={[0, 1]} 
+                                label={<YAxisLabel padding={5} color={'#41527D'} orientation="left" text="Technology"/>}
                                 orientation="left" 
                                 stroke='#41527D' 
                                 strokeWidth={2} 
@@ -165,8 +165,8 @@ const XAxisLabel = (props) => {
 
 const YAxisLabel = (props) => {
   const {x, y, width, height} = props.viewBox
-  const { orientation, color } = props
-  const cx = orientation === "right" ?  x + 80 + width : x - 65
+  const { orientation, color, padding=100 } = props
+  const cx = orientation === "right" ?  x + padding + width : x - padding
   const cy = (height / 2) + y
   const rot = `270 ${cx} ${cy}`
 
@@ -178,7 +178,8 @@ const YAxisLabel = (props) => {
   )
 }
 
-const chartsHeight = 200
+const chartsHeight = 250
+
 
 const AxisLabel = styled.text`
     font-weight:bold;

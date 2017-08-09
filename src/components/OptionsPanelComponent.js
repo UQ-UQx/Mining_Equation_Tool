@@ -1,7 +1,9 @@
 import React from "react"
 
 import CheckBoxGroup from "../lib/CheckBoxGroup"
+import { clearFix } from "polished"
 import styled from "styled-components"
+
 
 export default class OptionsPanelComponent extends React.Component {
 
@@ -9,6 +11,8 @@ export default class OptionsPanelComponent extends React.Component {
     render(){
         return (<OptionsPanel className="OptionsPanel">
             
+        <h4>GDP Increase over time</h4>
+
             <CheckBoxGroup
             
                 name="gdp_increase"
@@ -41,6 +45,7 @@ export default class OptionsPanelComponent extends React.Component {
                 }}
             
             />
+            <h4>Population Predictions</h4>
 
             <CheckBoxGroup
             
@@ -84,11 +89,57 @@ export default class OptionsPanelComponent extends React.Component {
                 }}
             
             />
+
+            <h4>Technology Effeciancy Improvment</h4>
+             <CheckBoxGroup
+            
+                name="tech_decrease"
+                options={[
+                    {
+                        value:"Tech 1%",
+                        data:0.01,
+                        checked: true,
+                    },
+                    {
+                        value:"Tech 2%",
+                        data:0.02,
+                        checked: false,
+                    },
+                    {
+                        value:"Tech 3%",
+                        data:0.03,
+                        checked: false,
+                    },
+                    {
+                        value:"Tech 4%",
+                        data:0.04,
+                        checked: false,
+                    },
+                    {
+                        value:"Tech 5%",
+                        data:0.05,
+                        checked: false,
+                    }
+                ]}
+                type="radio"
+                returnVal="all"
+                onOptionChange={(name, selected_options)=>{
+                    console.log(name, selected_options)
+
+                    this.props.updateStateValue({
+                        "technology_decrease":selected_options[0].data
+                    }) 
+
+                }}
+            
+            />
         </OptionsPanel>)
     }
 }
 
 const OptionsPanel = styled.div`
-    width: 445px;
-    margin: 0 auto;
+    width: 550px;
+    margin:0 auto;
+    text-align:center;
+    padding-left:40px;
 `

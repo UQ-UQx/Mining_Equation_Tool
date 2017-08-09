@@ -16,7 +16,9 @@ import {
     AreaChart, 
     Area, 
     CartesianGrid, 
-    Text
+    Text,
+    ReferenceLine,
+    ReferenceDot
 } from 'recharts';
 import {Motion, spring} from 'react-motion';
 import styles from "./_Styles"
@@ -29,6 +31,9 @@ const ImpactChartContainer = styled.div`
     height:400px;
 `
 
+const ImpactChartDomainMin = 0
+const ImpactChartDomainMax = 5600
+
 export default class ImpactChartComponent extends React.Component{
 
 
@@ -36,7 +41,7 @@ export default class ImpactChartComponent extends React.Component{
     render(){
 
         console.log("CHART COMPONENT", this.props)
-
+        const xRefVal = 2040
          let chart = (<ResponsiveContainer>
                     <LineChart width={600} height={300} data={this.props.impact_chart_data}
                         margin={{ top: 10, right: 100, left: 100, bottom: 50 }}>
@@ -50,35 +55,32 @@ export default class ImpactChartComponent extends React.Component{
                         tick={<AngledTick />}
                     />
                   
-                    <YAxis  
-                        dataKey="pop" 
-                        domain={["auto", "auto"]} 
-                        label={<YAxisLabel color={'#41527D'} orientation="left" text="Population"/>}
-                        orientation="left" 
-                        stroke='#41527D' 
-                        strokeWidth={2} 
-                        tickFormatter={CommaFormat} 
-                        yAxisId="left" 
-                    />
+                   
 
                     <YAxis 
                         dataKey="impact" 
-                        domain={["auto", "auto"]} 
-                        label={<YAxisLabel color={'#F70D1C'} orientation="right" text="Impact"/>}
-                        orientation="right" 
+                        domain={[ImpactChartDomainMin, ImpactChartDomainMax]} 
+                        label={<YAxisLabel padding={10} color={'#F70D1C'} orientation="left" text="Impact"/>}
+                        orientation="left" 
                         stroke='#F70D1C' 
                         strokeWidth={2} 
                         tickFormatter={CommaFormat} 
-                        yAxisId="right" 
+                        yAxisId="left" 
                     />
 
                     <Tooltip 
                         content={<IPATTooltipCustom />}
                         isAnimationActive={true}
                     />
+                    <ReferenceLine
+                     x={xRefVal} 
+                     stroke="green" 
+                     label={<ImpactReferanceLabel refVal={xRefVal} chartData={this.props.impact_chart_data} />}
+                        strokeDasharray="3 3"
+                    
+                        />
 
-                    <Line connectNulls={true} dot={false} yAxisId="left" type="natural" type='linear' dataKey='pop' stroke='#41527D' strokeWidth={3} />
-                    <Line connectNulls={true} dot={false} yAxisId="right" type="natural" type='linear' dataKey='impact' stroke='#F70D1C' strokeWidth={3} />
+                    <Line connectNulls={true} dot={false} yAxisId="left" type="natural" type='linear' dataKey='impact' stroke='#F70D1C' strokeWidth={3} />
 
                     </LineChart>
                 </ResponsiveContainer>) 
@@ -105,7 +107,19 @@ const AngledTick = (props) => {
       </g>
     );
 }
+const ImpactReferanceLabel = (props) => {
+  const {x, y, width, height} = props.viewBox
+    console.log(props)
+     const {refVal} = props
 
+    const impactAtRef = props.chartData.filter((dat)=>{return dat.year === refVal})[0].impact
+    const heightOfImpact = height-(height*(impactAtRef/ImpactChartDomainMax))-10
+    console.log(impactAtRef, heightOfImpact, height)
+    const cx =  x + (impactAtRef/ImpactChartDomainMax < 0.5? 40:-40)
+    const cy =  y + heightOfImpact
+
+    return (<RefLabel x={cx} y={cy} fill="red" textAnchor="middle">{impactAtRef.toFixed(2)}</RefLabel>)
+}
 const XAxisLabel = (props) => {
   const {x, y, width, height} = props.viewBox
   const cx =  x + (width / 2)
@@ -119,8 +133,8 @@ const XAxisLabel = (props) => {
 
 const YAxisLabel = (props) => {
   const {x, y, width, height} = props.viewBox
-  const { orientation, color } = props
-  const cx = orientation === "right" ?  x + 80 + width : x - 65
+  const { orientation, color, padding = 80 } = props
+  const cx = orientation === "right" ?  x + padding + width : x - padding
   const cy = (height / 2) + y
   const rot = `270 ${cx} ${cy}`
 
@@ -132,6 +146,10 @@ const YAxisLabel = (props) => {
   )
 }
 
+const RefLabel = styled.text`
+    font-weight:bold;
+
+`
 const AxisLabel = styled.text`
     font-weight:bold;
     fill:${(props)=> props.color ? props.color : "black" };

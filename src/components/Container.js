@@ -35,15 +35,14 @@ export default class Container extends React.Component {
     }
 
     getAffluence(gdp_per_capita){
-        return (1*(gdp_per_capita*gdp_per_capita)*0.000001)+(gdp_per_capita*0.0568)
+        return (-1*(gdp_per_capita*gdp_per_capita)*0.000001)+(gdp_per_capita*0.0568)
     }
 
     getPopulationForYear(year, type="median"){
-        const multiplier = 1
+        const multiplier = 1000
         switch (type) {
             case "median":
-                console.log("DEFAULT")
-                return (-462.8099673478*(year*year))+(1948623.62597925*year)-2039965212.08985
+                return multiplier*(-462.8099673478*(year*year)+(1948623.62597925*year)-2039965212.08985)
                 break;
             case "upper_a":
                 return multiplier*(-240.27082606811*(year*year) + (1056081.92498441*year) - 1145040509.46842)
@@ -81,8 +80,7 @@ export default class Container extends React.Component {
             let population = this.getPopulationForYear(year, this.state.population_type)
             let gdp_per_capita = gdp/population
             let affluence = this.getAffluence(gdp_per_capita)
-            console.log(affluence, tech, population)
-            let impact = population*affluence*tech
+            let impact = (population*affluence*tech)/1000000000
 
             population_data.push({
                 year:year,
@@ -107,7 +105,7 @@ export default class Container extends React.Component {
             })
 
 
-
+            console.log(gdp_per_capita, affluence, population)
             gdp = this.state.gdp_increase > 0 ? gdp + ( gdp * this.state.gdp_increase) : gdp
             tech = this.state.technology_decrease > 0 ? tech - ( tech * this.state.technology_decrease) : tech
         }
@@ -120,11 +118,6 @@ export default class Container extends React.Component {
 
             <Header>MiningX I=PAT Visualisation</Header>
 
-            <ChartsContainerComponent
-                population_data={population_data}
-                affluence_data={affluence_data}
-                technology_data={technology_data}
-            />
             
 
              <ImpactCharContainer
@@ -132,7 +125,13 @@ export default class Container extends React.Component {
                 impact_data={impact_data}
                 impact_chart_data={impact_chart_data}
             /> 
-
+            
+            <ChartsContainerComponent
+                population_data={population_data}
+                affluence_data={affluence_data}
+                technology_data={technology_data}
+            />
+            
             <OptionsPanelContainer>
                 <OptionsPanelComponent
                     {...this.state}
