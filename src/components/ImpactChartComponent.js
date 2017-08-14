@@ -52,7 +52,7 @@ export default class ImpactChartComponent extends React.Component{
                         label={<XAxisLabel text="Year"/>} 
                         strokeWidth={2} 
                         tickCount={5}
-                        tick={<AngledTick />}
+                        tick={<AngledTick refVal={xRefVal} />}
                     />
                   
                    
@@ -100,10 +100,10 @@ const CommaFormat = (value) => {
 }
 
 const AngledTick = (props) => {
-    const {x, y, payload} = props
+    const {x, y, payload, refVal} = props
    	return (
     	<g transform={`translate(${x},${y})`}>
-        <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">{payload.value}</text>
+        <AngledTickText isRefVal={payload.value === refVal ? true:false} x={0} y={0} dy={16} textAnchor="end" transform="rotate(-35)">{payload.value}</AngledTickText>
       </g>
     );
 }
@@ -118,7 +118,15 @@ const ImpactReferanceLabel = (props) => {
     const cx =  x + (impactAtRef/ImpactChartDomainMax < 0.5? 40:-40)
     const cy =  y + heightOfImpact
 
-    return (<RefLabel x={cx} y={cy} fill="red" textAnchor="middle">{impactAtRef.toFixed(2)}</RefLabel>)
+    return (<g>
+        <RefLabel x={cx} y={cy-15} fill="green" textAnchor="middle">
+        Impact at {refVal}
+        </RefLabel>
+
+        <RefLabel x={cx} y={cy} fill="red" textAnchor="middle">
+        {impactAtRef.toFixed(2)}
+        </RefLabel>
+        </g>)
 }
 const XAxisLabel = (props) => {
   const {x, y, width, height} = props.viewBox
@@ -146,8 +154,25 @@ const YAxisLabel = (props) => {
   )
 }
 
+const AngledTickText = styled.text`
+    fill:${(props)=> props.isRefVal ? "green":"#666" };
+    font-weight:${(props)=> props.isRefVal ? "bolder":"normal" };
+
+`
+
 const RefLabel = styled.text`
     font-weight:bold;
+    background-color:black
+
+`
+const RefLabelContainer = styled.rect.attrs({
+	// we can define static props
+    width: 300,
+    
+    
+
+})`
+    fill:red;
 
 `
 const AxisLabel = styled.text`

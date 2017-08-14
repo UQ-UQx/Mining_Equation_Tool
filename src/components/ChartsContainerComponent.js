@@ -32,7 +32,7 @@ export default class ChartsContainerComponent extends React.Component{
 
                             <XAxis 
                                 dataKey="year" 
-                                domain={[6000000000, 12000000000]}  
+                                domain={["auto", "auto"]}  
                                 label={<XAxisLabel text="Year"/>} 
                                 strokeWidth={2} 
                                 tickCount={5}
@@ -41,7 +41,7 @@ export default class ChartsContainerComponent extends React.Component{
                         
                             <YAxis  
                                 dataKey="pop" 
-                                domain={["auto", "auto"]} 
+                                domain={[7000000000, 12000000000]} 
                                 label={<YAxisLabel padding={50} color={'#41527D'} orientation="left" text="Population"/>}
                                 orientation="left" 
                                 stroke='#41527D' 
