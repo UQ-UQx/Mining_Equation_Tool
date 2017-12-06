@@ -90,7 +90,7 @@ export default class OptionsPanelComponent extends React.Component {
             
             />
 
-            <h4>Technology Effeciancy Improvment</h4>
+            <h4>Technology Efficiency Improvement</h4>
              <CheckBoxGroup
             
                 name="tech_decrease"
